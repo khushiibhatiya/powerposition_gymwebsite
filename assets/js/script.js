@@ -1,4 +1,20 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    // Load header component into `#site-header`
+    async function loadComponent(targetSelector, url) {
+        try {
+            const resp = await fetch(url);
+            if (!resp.ok) throw new Error(`Failed to fetch ${url} (${resp.status})`);
+            const html = await resp.text();
+            const container = document.querySelector(targetSelector);
+            if (container) container.innerHTML = html;
+        } catch (err) {
+            console.error('Error loading component:', err);
+        }
+    }
+
+    await loadComponent('#site-header', 'assets/component/header.html');
+    // Also load footer component into `#site-footer`
+    await loadComponent('#site-footer', 'assets/component/footer.html');
     // Scroll Animation Observer
     const observerOptions = {
         threshold: 0.1,
